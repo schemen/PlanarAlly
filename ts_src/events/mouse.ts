@@ -2,6 +2,7 @@ import gameManager from "../planarally";
 import { getMouse } from "../utils";
 import { l2g } from "../units";
 import Settings from "../settings";
+import { socket } from "../socket";
 
 export function onPointerDown(e: MouseEvent) {
     if (!Settings.board_initialised) return;
@@ -58,10 +59,33 @@ export function onPointerUp(e: MouseEvent) {
 
 export function onContextMenu(e: MouseEvent) {
     if (!Settings.board_initialised) return;
-    if (e.button !== 2 || (<HTMLElement>e.target).tagName !== 'CANVAS') return;
+    if (e.button !== 2) return;
+    if ((<HTMLElement>e.target).tagName === 'CANVAS') {
+        gameManager.tools.getIndexValue(gameManager.selectedTool)!.onContextMenu(e);
+    } else if ((<HTMLElement>e.target).className.split(" ").includes("token")) {
+        const src = (<HTMLElement>e.target).querySelector("img")!.src;
+        const $menu = $('#contextMenu');
+        $menu.empty();
+        $menu.show();
+        $menu.css({ left: e.pageX, top: e.pageY });
+        let data = "<ul>";
+        data += "<li data-action='showToPlayers' class='context-clickable'>Show to players</li>";
+        data += "</ul>";
+        $menu.html(data);
+        $(".context-clickable").on('click', function () {
+            const action = $(this).data("action");
+            switch (action) {
+                case 'showToPlayers':
+                    socket.emit("showAssetToPlayers", {src: src});
+                    break;
+            }
+            $menu.hide();
+        });
+    } else {
+        return;
+    }
     e.preventDefault();
     e.stopPropagation();
-    gameManager.tools.getIndexValue(gameManager.selectedTool)!.onContextMenu(e);
 }
 
 export function scrollZoom(e: WheelEvent) {

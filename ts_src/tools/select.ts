@@ -261,11 +261,9 @@ export class SelectTool extends Tool {
         });
         if (!hit) {
             if (gameManager.layerManager.getLayer() === undefined) return;
-            const l = gameManager.layerManager.getLayer()!;
-            const asset = this;
             const $menu = $('#contextMenu');
-            $menu.show();
             $menu.empty();
+            $menu.show();
             $menu.css({ left: mouse.x, top: mouse.y });
             let data = "<ul>";
             if (Settings.IS_DM)

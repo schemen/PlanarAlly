@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 [DM] denotes changes only useful for the dungeon master
 [tech] denotes technical changes
 
+## [0.9] - To be released
+
+### Added
+- [DM] Show asset to player feature
+
 ## [0.8] - 2018-06-19
 
 This release greatly increases performance of all lighting modes and also properly 

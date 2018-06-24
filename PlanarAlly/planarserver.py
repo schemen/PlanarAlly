@@ -487,6 +487,20 @@ async def bring_players(sid, data):
         await sio.emit("set position", data, room=policy.get_sid(user, room), namespace='/planarally')
 
 
+@sio.on("showAssetToPlayers", namespace='/planarally')
+async def show_asset_to_players(sid, data):
+    policy = app['AuthzPolicy']
+    username = policy.sio_map[sid]['user'].username
+    room = policy.sio_map[sid]['room']
+    location = room.get_active_location(username)
+
+    if room.creator != username:
+        print(f"{username} attempted to show assets to players")
+        return
+    
+    await sio.emit("showAssetToPlayers", data, room=location.sioroom, skip_sid=sid, namespace='/planarally')
+
+
 @sio.on('connect', namespace='/planarally')
 async def test_connect(sid, environ):
     username = await authorized_userid(environ['aiohttp.request'])

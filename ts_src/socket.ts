@@ -133,6 +133,11 @@ socket.on("clear temporaries", function (shapes: ServerShape[]) {
         gameManager.layerManager.getLayer(shape.layer)!.removeShape(real_shape, false);
     })
 });
+socket.on("showAssetToPlayers", function (data: {src: string}) {
+    const dia = $(`<div class='dialog' title='Asset preview'><img src='${data.src}'></div>`);
+    $('#main').append(dia);
+    dia.dialog();
+});
 
 export function sendClientOptions() {
     socket.emit("set clientOptions", {

@@ -232,7 +232,7 @@ a, a:visited, a:hover, a:active {
 
 #contextMenu {
     position: absolute;
-    z-index: 11;
+    z-index: 31;
 }
 
 #contextMenu ul {
