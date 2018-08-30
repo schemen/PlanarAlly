@@ -27,8 +27,9 @@ from planarally import PlanarAlly
 
 FILE_DIR = os.path.dirname(os.path.realpath(__file__))
 os.chdir(FILE_DIR)
-SAVE_FILE = "planar.save"
-
+cfg = configparser.ConfigParser()
+cfg.read("server_config.cfg")
+SAVE_FILE = cfg['General']['save_file']
 PENDING_FILE_UPLOAD_CACHE = {}
 
 ASSETS_DIR = pathlib.Path(FILE_DIR) / "static" / "assets"
@@ -815,8 +816,6 @@ app.on_shutdown.append(on_shutdown)
 
 if __name__ == '__main__':
     sio.start_background_task(save_all)
-    cfg = configparser.ConfigParser()
-    cfg.read("server_config.cfg")
     if cfg.getboolean('Webserver', 'ssl'):
         import ssl
 
